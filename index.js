@@ -80,7 +80,22 @@ app.get('/image/:fileName', (req, res) => {
         res.status(500).json({ msg: 'Error fetching image', error: error.message });
     }
 });
+// Add a new function to get PDF files
+app.get('/pdf/:fileName', (req, res) => {
+    const fileName = req.params.fileName;
 
+    if (!fileName) {
+        return res.status(400).json({ msg: 'File name is required' });
+    }
+
+    const filePath = path.join(__dirname, 'public', fileName);
+
+    try {
+        res.sendFile(filePath);
+    } catch (error) {
+        res.status(500).json({ msg: 'Error fetching PDF', error: error.message });
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`server is running on ${PORT}`)
